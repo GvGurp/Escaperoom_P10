@@ -8,7 +8,6 @@
 </head>
 <body>
 <nav>
-        <
         <div id="">
             <ul>
                 {{-- Voor niet-ingelogde gebruikers (gast) (Gaby) --}}
