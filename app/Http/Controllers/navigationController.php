@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class navigatieController extends Controller
+class navigationController extends Controller
 {
     public function home()
     {

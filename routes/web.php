@@ -14,6 +14,6 @@ Route::post('/logout', [navigationController::class, 'logout'])->middleware('aut
 Route::get('/login', [navigationController::class, 'login'])->name('login'); // Inclusief registratie
 Route::get('/admin', [navigationController::class, 'admin'])->middleware(['auth', 'admin'])->name('admin'); // Alleen admin
 
-
+Auth::routes();
 
 
