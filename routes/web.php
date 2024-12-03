@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\navigationController;
 
@@ -15,5 +16,3 @@ Route::get('/login', [navigationController::class, 'login'])->name('login'); // 
 Route::get('/admin', [navigationController::class, 'admin'])->middleware(['auth', 'admin'])->name('admin'); // Alleen admin
 
 Auth::routes();
-
-
