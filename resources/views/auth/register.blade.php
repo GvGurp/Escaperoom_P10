@@ -112,8 +112,8 @@
 @extends('layout.main_layout')
 
 @section('content')
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="bg-white shadow-lg rounded-lg w-full max-w-lg p-6">
+    <div class="flex items-center justify-center min-h-screen ">
+        <div class="bg-slate-800 shadow-lg rounded-lg w-full max-w-lg p-6">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">{{ __('Register') }}</h2>
 
             <form method="POST" action="{{ route('register') }}">

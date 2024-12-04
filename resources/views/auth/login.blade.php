@@ -83,8 +83,8 @@
 @extends('layout.main_layout')
 
 @section('content')
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+    <div class="flex items-center justify-center min-h-screen ">
+        <div class="bg-slate-800 shadow-md rounded-lg p-8 w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">{{ __('Login') }}</h2>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
