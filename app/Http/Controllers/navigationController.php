@@ -32,6 +32,16 @@ class navigationController extends Controller
         return view('auth.login'); // Toon login/registratiepagina
     }
 
+    public function adminHome()
+    {
+        return view('admin.admin_home');
+    }
+
+    public function playerHome()
+    {
+        return view('player.player_home');
+    }
+
     public function logout(Request $request)
     {
         auth()->logout();
