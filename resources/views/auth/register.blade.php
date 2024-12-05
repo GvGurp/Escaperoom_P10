@@ -193,6 +193,37 @@
                         {{ __('Confirm Password') }}
                     </label>
                 </div>
+                <div class="row mb-3">
+                    <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Role') }}</label>
+                
+                    <div class="col-md-6">
+                        <select id="role" class="form-control @error('role') is-invalid @enderror" name="role" required>
+                            <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
+                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        </select>
+                
+                        @error('role')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                
+                <div class="row mb-3" id="admin-code-container" style="display: none;">
+                    <label for="adminCode" class="col-md-4 col-form-label text-md-end">{{ __('Admin Code') }}</label>
+                
+                    <div class="col-md-6">
+                        <input id="adminCode" type="text" class="form-control @error('adminCode') is-invalid @enderror" name="adminCode" value="{{ old('adminCode') }}">
+                
+                        @error('adminCode')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                
 
                 <!-- Submit Button -->
                 <div>
@@ -204,4 +235,15 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('role').addEventListener('change', function () {
+            const adminCodeContainer = document.getElementById('admin-code-container');
+            if (this.value === 'admin') {
+                adminCodeContainer.style.display = 'block';
+            } else {
+                adminCodeContainer.style.display = 'none';
+            }
+        });
+    </script>
 @endsection

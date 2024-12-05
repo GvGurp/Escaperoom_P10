@@ -47,15 +47,21 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'phonenumber' => ['required', 'string', 'max:15'], // Maximaal 15 tekens is een veelgebruikte limiet voor telefoonnummers
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'], // Minimaal 8 tekens
-        ]);
-    }
+{
+    return Validator::make($data, [
+        'firstname' => ['required', 'string', 'max:255'],
+        'lastname' => ['required', 'string', 'max:255'],
+        'phonenumber' => ['required', 'string', 'max:15'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'role' => ['required', 'in:user,admin'], // Alleen "user" of "admin" toegestaan
+        'adminCode' => ['nullable', 'string', function ($attribute, $value, $fail) use ($data) {
+            if ($data['role'] === 'admin' && $value !== '2005') {
+                $fail('The admin code is incorrect.');
+            }
+        }],
+    ]);
+}
 
     /**
      * Create a new user instance after a valid registration.
@@ -71,6 +77,7 @@ class RegisterController extends Controller
             'phonenumber' => $data['phonenumber'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => $data['role'], // Rol wordt opgeslagen
         ]);
     }
 }
