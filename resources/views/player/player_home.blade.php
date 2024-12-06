@@ -5,6 +5,7 @@
     <div class="">
        
         <h1 class="text-white text-4xl font-bold">Welkom op de Speler Homepagina</h1>
+        <p> Hallo</p>
 
     </div>
 @endsection
