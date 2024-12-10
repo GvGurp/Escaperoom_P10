@@ -4,9 +4,8 @@
 @section('content')
     <div class="">
        
-        <h1 class="">Welkom op de Speler Homepagina</h1>
+        <h1 class="">Welkom op de level 1 woordcode pagina</h1>
         <p> Hallo</p>
 
     </div>
 @endsection
-
