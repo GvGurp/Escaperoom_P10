@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[url(../public/images/Paisajes.gif)] bg-cover bg-center h-screen">
+<body class="bg-[url(../public/images/blaadje.gif)] bg-cover bg-center h-screen">
 <nav class="border-gray-200 bg-slate-800 dark:bg-gray-800 dark:border-gray-700">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="{{ route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -45,12 +45,21 @@
                         <li>
                             <a href="{{ url('account_edit') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">Account Edit</a>
                         </li>
+
+                        <li class="relative group">
+                        <button class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Record
+                        </button>
+                        <ul class="absolute hidden mt-2 w-40 bg-gray-100 rounded shadow-lg p-2 dark:bg-gray-700 group-hover:block">
                         <li>
                             <a href="{{ url('player') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">Player</a>
                         </li>
                         <li>
                             <a href="{{ url('score') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">Score</a>
                         </li>
+                        </ul>
+                    </li>
+                        
 
                         </li>
                     @else  {{-- Voor ingelogde gebruikers --}}
