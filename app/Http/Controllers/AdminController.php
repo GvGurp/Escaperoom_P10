@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+
+    public function index()
+    {
+        return view('admin/admin_home'); // Zorg ervoor dat je de juiste Blade-view hebt
+    }
+
     public function edit()
     {
         $admin = Auth::user();

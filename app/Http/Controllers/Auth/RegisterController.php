@@ -30,6 +30,15 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
+    protected function redirectPath()
+{
+    // Controleer de rol van de gebruiker
+    if (auth()->user()->role === 'admin') {
+        return 'admin/admin_home'; // Route of URL voor admin
+    }
+
+    return '/home'; // Route of URL voor gewone gebruikers
+}
     /**
      * Create a new controller instance.
      *

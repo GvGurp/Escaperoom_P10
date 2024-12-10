@@ -39,9 +39,9 @@
 
                 @auth
                     {{-- Voor ingelogde admin(Gaby) --}}
-                    @if(auth()->user()->is_admin)
+                    @if (auth()->user()->role === 'admin')
                         <li>
-                            <a href="{{ route('admin.home') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">Admin Home</a>
+                            <a href="{{ route('admin_home') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">Admin Home</a>
                         <li>
                             <a href="{{ url('account_edit') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">Account Edit</a>
                         </li>

@@ -18,6 +18,14 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
+    protected function redirectPath() {
+    // Controleer de rol van de gebruiker
+    if (auth()->user()->role === 'admin') {
+        return 'admin/admin_home'; // Route of URL voor admin
+    }
+
+    return '/home'; 
+    }
     /**
      * Create a new controller instance.
      *
@@ -36,13 +44,4 @@ class LoginController extends Controller
      * @param mixed $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function authenticated(Request $request, $user)
-    {
-        // Controleer of de gebruiker een admin is
-        if ($user->isAdmin()) {
-            return redirect()->route('adminCreate'); // Redirect naar adminCreate
-        }
-
-        return redirect()->intended($this->redirectTo);
-    }
 }
