@@ -37,7 +37,7 @@ class RegisterController extends Controller
         return 'admin/admin_home'; // Route of URL voor admin
     }
 
-    return '/home'; // Route of URL voor gewone gebruikers
+    return 'player/player_home'; // Route of URL voor gewone gebruikers
 }
     /**
      * Create a new controller instance.

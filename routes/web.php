@@ -6,7 +6,7 @@ use App\Http\Controllers\navigationController;
 
 // Gebruikersroutes
 Route::middleware('auth')->group(function () {
-    Route::get('/player/home', [navigationController::class, 'playerHome'])->name('player.home');
+    //Route::get('/player/home', [navigationController::class, 'playerHome'])->name('player.home');
     Route::get('/user/profile/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/profile/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
@@ -22,6 +22,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::view('/', 'home')->name('home');
 Route::view('/home', 'home')->name('home');
 Route::get('admin/admin_home', [AdminController::class, 'index'])->name('admin_home');
+Route::get('player/player_home', [AdminController::class, 'index'])->name('player_home');
 
 // Algemene routes
 //Route::get('/', function () {

@@ -24,7 +24,7 @@ class LoginController extends Controller
         return 'admin/admin_home'; // Route of URL voor admin
     }
 
-    return '/home'; 
+    return 'player/player_home'; 
     }
     /**
      * Create a new controller instance.
