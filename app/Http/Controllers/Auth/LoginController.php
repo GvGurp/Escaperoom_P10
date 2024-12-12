@@ -4,44 +4,53 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request; // Vergeet niet deze te importeren
-use App\Models\User; // Vergeet niet het User model te importeren
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Zorg dat deze import aanwezig is
 
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
     protected $redirectTo = '/home';
 
-    protected function redirectPath() {
-    // Controleer de rol van de gebruiker
-    if (auth()->user()->role === 'admin') {
-        return 'admin/admin_home'; // Route of URL voor admin
-    }
-
-    return 'player/player_home'; 
-    }
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
     }
 
     /**
-     * Handle a successful login.
-     *
-     * @param Request $request
-     * @param mixed $user
-     * @return \Illuminate\Http\RedirectResponse
+     * Override the username method to support login with email or username.
      */
+    public function username()
+    {
+        return 'login';
+    }
+
+    /**
+     * Customize the login process to handle email or username.
+     */
+    protected function attemptLogin(Request $request)
+    {
+        $credentials = $request->only('login', 'password');
+
+        // Check if login input is an email or username
+        $field = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        // Attempt to log in with the determined field
+        return Auth::attempt([
+            $field => $credentials['login'],
+            'password' => $credentials['password']
+        ], $request->filled('remember'));
+    }
+
+    /**
+     * Validate the login request.
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'login' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
 }
