@@ -62,6 +62,7 @@ class RegisterController extends Controller
         'lastname' => ['required', 'string', 'max:255'],
         'phonenumber' => ['required', 'string', 'max:15'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'username' => ['required', 'string', 'max:255'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
         'role' => ['required', 'in:user,admin'], // Alleen "user" of "admin" toegestaan
         'adminCode' => ['nullable', 'string', function ($attribute, $value, $fail) use ($data) {
@@ -85,6 +86,7 @@ class RegisterController extends Controller
             'lastname' => $data['lastname'],
             'phonenumber' => $data['phonenumber'],
             'email' => $data['email'],
+            'username' =>$data['username'],
             'password' => Hash::make($data['password']),
             'role' => $data['role'], // Rol wordt opgeslagen
         ]);

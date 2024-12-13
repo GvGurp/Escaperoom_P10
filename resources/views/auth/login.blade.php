@@ -7,19 +7,19 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <!-- Email Address -->
+                <!-- Email or Username -->
                 <div class="relative z-0 w-full mb-6 group">
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('email') is-invalid @enderror"
+                    <input id="login" type="text" name="login" value="{{ old('login') }}" required
+                           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('login') is-invalid @enderror"
                            placeholder=" " autofocus>
-                    <label for="email"
+                    <label for="login"
                            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                        {{ __('Email Address') }}
+                        {{ __('Email or Username') }}
                     </label>
-                    @error('email')
+                    @error('login')
                     <span class="text-red-500 text-sm">
-                    <strong>{{ $message }}</strong>
-                </span>
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
                 </div>
 
