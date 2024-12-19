@@ -11,8 +11,11 @@
                 <p class="mt-2">There are 3 levels of challenges. Complete them to progress!</p></div>
             <div class="ml-6"><h2 class="text-2xl mt-4">click here to play ^_^</h2>
                 <h2 class="text-2xl mt-4">>>>>></h2>
-               
+
                 <button
+                    class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    play
+                </button><button
                     class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                     play
                 </button>
