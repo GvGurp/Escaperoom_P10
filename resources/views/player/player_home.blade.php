@@ -1,4 +1,5 @@
-@extends ('layout.main_layout')@section('content')
+@extends ('layout.main_layout')
+@section('content')
     <div class="container mx-auto p-6">        <!-- Main Card -->
         <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg flex items-center">
             <div class="w-1/3">                <!-- Placeholder for Image --> <img src="../public/images/download.jpg"
@@ -9,13 +10,13 @@
                     the journey isn’t easy.<br> The forest is full of challenges that only the bravest can overcome.
                 </h2>
                 <p class="mt-2">There are 3 levels of challenges. Complete them to progress!</p></div>
-            <div class="ml-6"><h2 class="text-2xl mt-4">click here to play ^_^</h2>
+            <div class="ml-6"><h2 class="text-2xl mt-4">klik here to play ^_^</h2>
                 <h2 class="text-2xl mt-4">>>>>></h2>
-               
                 <button
                     class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                     play
                 </button>
+
             </div>
         </div>        <!-- 3 Separate Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">            <!-- Card 1 -->
@@ -34,3 +35,4 @@
         </div>
     </div>
 @endsection
+

@@ -59,14 +59,14 @@
                         </li>
                         </ul>
                     </li>
-                        
+
 
                         </li>
                     @else  {{-- Voor ingelogde gebruikers --}}
                     <li>
-                        <a href="{{ route('player_home') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">Player Home</a>
+                        <a href="{{ route('player_home') }}" class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">player Home</a>
                     <li class="relative group">
-                        <button class="block py-2 px-3 md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">
+                        <button class="block  md:p-0 text-slate-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white">
                             Account
                         </button>
                         <ul class="absolute hidden mt-2 w-40 bg-gray-100 rounded shadow-lg p-2 dark:bg-gray-700 group-hover:block">
