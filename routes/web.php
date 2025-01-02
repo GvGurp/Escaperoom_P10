@@ -31,3 +31,32 @@ Route::get('/login', [navigationController::class, 'login'])->name('login');
 
 // Auth routes
 Auth::routes();
+
+// Level 1 routes 
+
+Route::get('/level1', function () {
+    return view('level1_woordcode');
+})->name('level1');
+
+
+// Gamecontroller routes 
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\HomeController;
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/game/start', [GameController::class, 'startGame'])->name('game.start');
+    Route::post('/game/play', [GameController::class, 'playGame'])->name('game.play');
+    Route::post('/game/submit-guess', [GameController::class, 'submitGuess'])->name('game.submitGuess');
+    Route::post('/game/end', [GameController::class, 'endGame'])->name('game.end');
+    Route::get('/game/next-level', [GameController::class, 'nextLevel'])->name('game.nextLevel');
+    Route::get('/game/restart', [GameController::class, 'restartGame'])->name('game.restart');
+});
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::post('/game/submitGuess', [GameController::class, 'submitGuess'])->name('game.submitGuess');
+Route::get('/game/end', [GameController::class, 'end'])->name('game.end'); // End game page
+
+
+Route::get('/game/play', [GameController::class, 'game.play']);

@@ -55,4 +55,24 @@ class User extends Authenticatable
     {
         return $this->email === 'uneedit-admin@gmail.com';
     }
+
+    /**
+     * Relationship with UserProgress.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function progresses()
+    {
+        return $this->hasMany(UserProgress::class);
+    }
+
+    /**
+     * Relationship with Score.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }
