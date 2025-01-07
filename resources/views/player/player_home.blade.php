@@ -20,12 +20,12 @@
         <div class="ml-6">
             <h2 class="text-2xl mt-4">Create an account to play ^_^</h2>
             <h2 class="text-2xl mt-4">>>>>></h2>
-            <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            <a href="{{ route('register') }}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                 Register
-            </button>
-            <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            </a>
+            <a href="{{ route('login') }}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                 Log In
-            </button>
+            </a>
         </div>
     </div>
 
@@ -36,9 +36,11 @@
             <div class="bg-gray-500 h-48 rounded-lg mb-4"></div>
             <h2 class="text-xl font-semibold">Level 1</h2>
             <p>Solve a game of Hangman to unlock the path.</p>
-            <button id="startGameButton" class="block mt-4 bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-blue-600">
-                Start Game
-            </button>
+            <form action="{{ route('game.rules') }}" method="GET">
+                <button type="submit" class="block mt-4 bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-blue-600">
+                    Start Game
+                </button>
+            </form>
         </div>
         <!-- Card 2 -->
         <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
@@ -55,30 +57,19 @@
     </div>
 </div>
 
-<!-- Game Rules Popup -->
-<div id="gameRules" style="display: none;">
+<!-- Game Rules Page -->
+<div id="gameRules" class="hidden">
     <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <h2 class="text-xl font-semibold">Game Rules</h2>
             <p>Guess as many words as you can within 60 seconds!</p>
-            <p>If you make 4 mistakes, the word is skipped. If the little man loses all limbs, the game ends!</p>
-            <button id="startGameButtonPopup" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                Start Game
-            </button>
+            <p>If you make 4 mistakes, the word is skipped. If the little man loses all limbs, the game endshaaaaaaaaaaaaaaa!</p>
+            <form action="{{ route('game.start') }}" method="GET">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    Start Game
+                </button>
+            </form>
         </div>
     </div>
 </div>
-
-<script>
-    // Show the game rules popup when the "Start Game" button is clicked
-    document.getElementById('startGameButton').onclick = function() {
-        document.getElementById('gameRules').style.display = 'block';
-    }
-
-    // Redirect to the game when the "Start Game" button in the popup is clicked
-    document.getElementById('startGameButtonPopup').onclick = function() {
-        window.location.href = "{{ route('game.start') }}"; // Redirect to the start game route
-    }
-</script>
-
 @endsection
