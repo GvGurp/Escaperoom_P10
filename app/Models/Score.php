@@ -10,7 +10,7 @@ class Score extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'level_id', 'score', 'time_taken'];
+    protected $fillable = ['user_id', 'score','level_id', 'time_taken'];
 
     public function user()
     {

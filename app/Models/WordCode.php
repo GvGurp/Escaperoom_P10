@@ -9,5 +9,5 @@ class WordCode extends Model
 {
     use HasFactory;
     protected $table = 'wordcode'; 
-    protected $fillable = ['word', 'hint', 'second_hint'];
+    protected $fillable = ['word', 'hint1', 'hint2'];
 }
