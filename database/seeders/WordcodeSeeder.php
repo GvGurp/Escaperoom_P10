@@ -35,17 +35,8 @@ class WordcodeSeeder extends Seeder
         }
 
         // Add Faker-generated words
-        $faker = \Faker\Factory::create();
-        for ($i = 0; $i < 95; $i++) {
-            $randomWord = $faker->word; // Random word
-            DB::table('wordcode')->insert([
-                'word' => $randomWord,
-                'hint1' => 'Something related to ' . $randomWord,
-                'hint2' => 'An additional clue for ' . $randomWord,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+       
         }
     }
-}
+
 

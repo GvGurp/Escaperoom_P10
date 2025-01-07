@@ -5,17 +5,9 @@
     <!-- Title -->
     <h1 class="text-4xl font-bold mb-4">Guess the Word!</h1>
 
-    <!-- Game Details -->
-    <div class="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
-        <p class="text-xl mb-4">Word: <strong>{{ $hiddenWord }}</strong></p>
-        <p class="mb-2">You have <strong>{{ $timeLimit }}</strong> seconds to guess the word!</p>
-        <p class="mb-2">Mistakes Left: <strong>{{ $mistakesLeft }}</strong></p>
-        <p>Score: <strong>{{ $score }}</strong></p>
-    </div>
+    
 
-    <!-- Guess Input Form -->
-    <div class="container mx-auto p-6">
-    <h1 class="text-4xl font-bold mb-4">Guess the Word!</h1>
+
 
     <!-- Display Error Message -->
     @if(session('error'))
@@ -27,10 +19,11 @@
     <!-- Game Details -->
     @if(isset($word))
         <div class="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
-            <p class="text-xl mb-4">Word: <strong>{{ $hiddenWord }}</strong></p>
-            <p class="mb-2">You have <strong>{{ $timeLimit }}</strong> seconds to guess the word!</p>
-            <p class="mb-2">Mistakes Left: <strong>{{ $mistakesLeft }}</strong></p>
-            <p>Score: <strong>{{ $score }}</strong></p>
+        <p class="text-xl mb-4">Word: <strong>{{ $hiddenWord }}</strong></p>
+<p class="mb-2">You have <strong>{{ $timeLimit }}</strong> seconds to guess the word!</p>
+<p class="mb-2">Mistakes Left: <strong>{{ $mistakesLeft }}</strong></p>
+<p>Score: <strong>{{ $score }}</strong></p>
+
         </div>
 
         <!-- Guess Form -->

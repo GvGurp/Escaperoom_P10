@@ -14,7 +14,7 @@ class GameController extends Controller
     // Display the rules before the game starts
     public function startGame()
     {
-        $words = WordCode::get(['id', 'word']);  // Fetch words (ensure you have these columns)
+        $words = WordCode::get(['id', 'word', 'hint1', 'hint2']);  // Fetch words 
         return view('game.play', [
             'hiddenWord' => '_ _ _ _ _', // Replace with actual logic
             'timeLimit' => 60,
@@ -27,7 +27,7 @@ class GameController extends Controller
 
     public function showRules()
 {
-    return view('game.rules'); // Create a 'rules.blade.php' for game rules
+    return view('game.rules'); 
 }
 
 
@@ -60,8 +60,8 @@ class GameController extends Controller
     
         // Pass the necessary variables to the view, including $word
         return view('game.play', [
-            'word' => $word,
-            'hiddenWord' => str_repeat('_ ', strlen($word->word)), // Masked word display
+            'word' => $wordcode,
+            'hiddenWord' => str_repeat('_ ', strlen($wordcode->word)), // Masked word display
             'timeLimit' => $timeLimit,
             'startTime' => $startTime,
             'endTime' => $endTime,
@@ -122,4 +122,3 @@ class GameController extends Controller
 
     
 }
-

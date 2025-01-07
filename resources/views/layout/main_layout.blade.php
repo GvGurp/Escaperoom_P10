@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>

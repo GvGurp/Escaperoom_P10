@@ -60,3 +60,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/profile/edit', [AdminController::class, 'edit'])->name('admin_edit');
     Route::put('/admin/profile/update', [AdminController::class, 'update'])->name('admin.update');
 });
+
+Route::get('/game/play', function () {
+    return view('game/play');
+})->name('game.play');
+Route::get('/game/play', [GameController::class, 'playGame'])->name('game.play');
