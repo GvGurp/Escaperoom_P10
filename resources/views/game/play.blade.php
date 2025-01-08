@@ -1,36 +1,81 @@
 @extends('layout.main_layout')
 
 @section('content')
-<div class="container">
-    <div class="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
-        <p class="text-xl mb-4">Word: <strong>{{ $hiddenWord }}</strong></p>
-        <p class="mb-2">You have <strong id="time-display">{{ $remainingTime }}</strong> seconds to guess the word!</p>
-        <p class="mb-2">Mistakes Left: <strong>{{ $mistakesLeft }}</strong></p>
-        <p>Score: <strong>{{ $score }}</strong></p>
-        <p class="text-lg text-blue-600 mt-4">Hint 1: <strong>{{ $hint1 }}</strong></p>
-    </div>
+<div class="container mx-auto p-6">
+    <!-- Title -->
+    <h1 class="text-4xl font-bold mb-4">Guess the Word!</h1>
 
-    <form action="{{ route('game.submit-guess') }}" method="POST">
-        @csrf
-        <div class="mb-4">
-            <label for="guess" class="block text-sm font-medium text-gray-700">Your Guess:</label>
-            <input type="text" name="guess" id="guess" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+    <!-- Display Error Message -->
+    @if(session('error'))
+        <div class="bg-red-500 text-white p-4 mb-4 rounded">
+            {{ session('error') }}
         </div>
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit Guess</button>
-    </form>
+    @endif
+
+    <!-- Game Details -->
+    @if(isset($word))
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
+            <p class="text-xl mb-4">Word: <strong>{{ $hiddenWord }}</strong></p>
+            <p class="mb-2">You have <strong id="time-display">{{ $remainingTime }}</strong> seconds to guess the word!</p>
+            <p class="mb-2">Mistakes Left: <strong>{{ $mistakesLeft }}</strong></p>
+            <p>Score: <strong>{{ $score }}</strong></p>
+            <p class="text-lg text-blue-600 mt-4">Hint 1: <strong>{{ $hint1 }}</strong></p>
+        </div>
+
+        <!-- Guess Form -->
+        <form action="{{ route('game.submit-guess') }}" method="POST">
+            @csrf
+            <input type="hidden" name="word_id" value="{{ $word->id }}">
+            <input type="text" name="guess" placeholder="Enter your guess" class="border rounded px-4 py-2">
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                Submit Guess
+            </button>
+        </form>
+    @else
+        <p>No word available to guess. Please add some words to the database.</p>
+    @endif
+
+    <!-- Timer Display -->
+    <div id="timer" class="text-xl font-bold text-red-600"></div>
+
+    <!-- Start and End Game Buttons -->
+    <div class="mt-4">
+        <a href="{{ route('game.end') }}" 
+           id="end-game-btn"
+           class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
+            End Game
+        </a>
+    </div>
 </div>
 
 <script>
-    let timer = document.getElementById('time-display');
-    let time = parseInt(timer.textContent);
-    let timerInterval = setInterval(function() {
-        if (time > 0) {
-            time--;
-            timer.textContent = time;
-        } else {
-            clearInterval(timerInterval);
-            alert('Time is up! Please try again.');
+    document.addEventListener('DOMContentLoaded', function () {
+        const timerElement = document.getElementById('time-display');
+        const endGameButton = document.getElementById('end-game-btn');
+        let timeRemaining = {{ $remainingTime }};
+        let countdown;
+
+        // Function to start or resume the timer
+        function startTimer() {
+            countdown = setInterval(() => {
+                timeRemaining--;
+                timerElement.textContent = timeRemaining;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdown);
+                    alert("Time's up! Redirecting to the end page...");
+                    window.location.href = "{{ route('game.end') }}";
+                }
+            }, 1000);
         }
-    }, 1000);
+
+        // Start or resume the timer on page load
+        startTimer();
+
+        // Stop the timer when the end game button is clicked
+        endGameButton.addEventListener('click', () => {
+            clearInterval(countdown);
+        });
+    });
 </script>
 @endsection
