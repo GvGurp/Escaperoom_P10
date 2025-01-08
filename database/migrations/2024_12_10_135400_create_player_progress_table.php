@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('level_id')->constrained()->onDelete('cascade'); // References levels table
             $table->integer('score')->default(0); // Player's score
             $table->boolean('completed')->default(false); // If the game is completed
+           
+            $table->integer('remainingTime')->default(60);
             $table->integer('time_taken')->nullable(); // Time taken to complete the level
             $table->timestamps();
         });

@@ -65,3 +65,4 @@ Route::get('/game/play', function () {
     return view('game/play');
 })->name('game.play');
 Route::get('/game/play', [GameController::class, 'playGame'])->name('game.play');
+
