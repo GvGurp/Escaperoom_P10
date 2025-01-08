@@ -1,13 +1,9 @@
-@extends ('layout.main_layout')
-
-
-@section('content')
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>level2_mathquiz</title>
+    <title>Math Mini-Game</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Include SweetAlert2 from CDN -->
@@ -30,9 +26,9 @@
     <p id="result" class="text-center text-xl font-semibold text-gray-700"></p>
 
     <div class="flex justify-center space-x-4 mt-6">
-        <button onclick="startGame()" class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">Start
-            Game
-        </button>
+        {{--        <button onclick="startGame()" class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">Start--}}
+        {{--            Game--}}
+        {{--        </button>--}}
         <div id="safeTimerDisplay" class="text-xl font-semibold text-gray-700">00:30</div>
         <button onclick="timer()" id="startTimerBtn"
                 class="px-6 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700">Start Timer
@@ -45,20 +41,23 @@
     </button>
 </div>
 
+
 <script>
+    startGame()
+
     // Timer Function
+    let gameTimer; // Declare a global variable to store the timer
+
     function timer() {
-        var sec = 30;
+        let sec = 30;
         document.getElementById('startTimerBtn').style.display = 'none'; // Hide start button when timer starts
-        var timer = setInterval(function () {
+
+        gameTimer = setInterval(function () {
             document.getElementById('safeTimerDisplay').innerHTML = '00:' + (sec < 10 ? '0' : '') + sec;
             sec--;
             if (sec < 0) {
-                clearInterval(timer);
-                restartGame()
-                // document.getElementById('safeTimerDisplay').innerHTML = 'Time is up!';
-                // document.getElementById('tryAgainBtn').style.display = 'block'; // Show "Try Again" button
-                // document.getElementById('startTimerBtn').style.display = 'inline'; // Show start button again
+                clearInterval(gameTimer);
+                restartGame(); // Show restart prompt when time is up
             }
         }, 1000);
     }
@@ -168,6 +167,7 @@
     }
 
     function showCompletionMessage() {
+        clearInterval(gameTimer); // Stop the timer when the player completes all levels
         Swal.fire({
             title: 'Congratulations!',
             text: 'You completed all levels!',
@@ -178,18 +178,12 @@
         });
     }
 
-    function showTryAgainMessage() {
-        Swal.fire({
-            title: 'sorry to slow',
-            text: 'times op try again',
-            icon: 'success',
-            confirmButtonText: 'Next Page'
-        }).then(() => {
-            window.location.href = 'nextpage.html'; // Replace with your desired page URL
-        });
-    }
+
 </script>
 
 </body>
 </html>
-@endsection
+
+
+
+
