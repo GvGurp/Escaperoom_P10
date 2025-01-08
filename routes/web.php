@@ -31,3 +31,9 @@ Route::get('/login', [navigationController::class, 'login'])->name('login');
 
 // Auth routes
 Auth::routes();
+
+
+Route::get('player/level2_math_quiz', function () {
+    return view('level2_math_quiz');
+});
+
