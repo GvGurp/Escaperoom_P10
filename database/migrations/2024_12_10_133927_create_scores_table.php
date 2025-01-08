@@ -1,30 +1,35 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Http\Controllers;
 
-return new class extends Migration
+use Illuminate\Http\Request;
+use App\Models\Score;
+
+class ScoreController extends Controller
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function saveScore(Request $request)
     {
-        Schema::create('scores', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->integer('level_id');
-            $table->integer('points');
-            $table->timestamps();
-        });
+        $request->validate([
+            'level_id' => 'required|integer',
+            'time' => 'required|string',
+        ]);
+
+        $score = new Score();
+        $score->user_id = auth()->id();
+        $score->level_id = $request->level_id;
+        $score->points = $this->calculatePoints($request->time); // Convert time to points
+        $score->save();
+
+        return response()->json(['success' => true, 'message' => 'Score saved successfully']);
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    // Calculate points based on remaining time
+    private function calculatePoints($time)
     {
-        Schema::dropIfExists('scores');
+        list($minutes, $seconds) = explode(':', $time);
+        $totalSeconds = ($minutes * 60) + $seconds;
+
+        // Example calculation: 1 point for each remaining second
+        return $totalSeconds;
     }
-};
+}

@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\navigationController;
+use App\Http\Controllers\ScoreController;
 
 // Gebruikersroutes
 Route::middleware('auth')->group(function () {
@@ -37,3 +38,6 @@ Route::get('player/level2_math_quiz', function () {
     return view('level2_math_quiz');
 });
 
+
+
+Route::post('/save-score', [ScoreController::class, 'saveScore'])->middleware('auth');
