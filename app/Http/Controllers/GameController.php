@@ -1,137 +1,149 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
-use App\Models\WordCode;
-use App\Models\UserProgress;
-use App\Models\Score;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use App\Models\WordCode; // Model voor woordcodes (Gaby)
+use App\Models\UserProgress; // Model voor gebruikersvoortgang (Gaby)
+use Illuminate\Http\Request; // Om verzoeken te verwerken (Gaby)
+use Illuminate\Support\Facades\Auth; // Authenticatie (Gaby)
+use Carbon\Carbon; // Voor tijdsberekeningen (Gaby)
 
 class GameController extends Controller
 {
-    // Display the rules before the game starts
+    /**
+     * Toon de spelregels voordat het spel begint (Gaby)
+     */
     public function startGame()
     {
-        // Reset score to 0 when starting a new game
-        $user = Auth::user();
+        $user = Auth::user(); // Haal de ingelogde gebruiker op (Gaby)
+
+        // Reset score en fouten bij een nieuw spel (Gaby)
         UserProgress::updateOrCreate(
-            ['user_id' => $user->id, 'level_id' => 1], // Assuming level 1
-            ['score' => 0, 'completed' => false, 'mistakes' => 0] // Reset score and mistakes
+            ['user_id' => $user->id, 'level_id' => 1], // Gebruiker en level-id (Gaby)
+            ['score' => 0, 'completed' => false, 'mistakes' => 0] // Reset data (Gaby)
         );
 
-        return view('game.play', [
-            'hiddenWord' => '_ _ _ _ _', // Replace with actual logic
-            'timeLimit' => 60,
-            'score' => 0,
-            'mistakesLeft' => 5,
+        return view('level1_woordcode', [ // Laad de level 1 view (Gaby)
+            'hiddenWord' => '_ _ _ _ _', // Verborgen woord placeholder (Gaby)
+            'timeLimit' => 60, // Tijdslimiet in seconden (Gaby)
+            'score' => 0, // Startscore (Gaby)
+            'mistakesLeft' => 5, // Maximum aantal fouten (Gaby)
         ]);
     }
 
+    /**
+     * Verwerk het spel als een gebruiker een poging doet (Gaby)
+     */
     public function playGame(Request $request)
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user(); // Haal de ingelogde gebruiker op (Gaby)
 
-    // Fetch a random word if no word_id is provided
-    $wordcode = $request->word_id 
-        ? WordCode::find($request->word_id)
-        : WordCode::inRandomOrder()->first();
+        // Haal een willekeurige of opgegeven woordcode op (Gaby)
+        $wordcode = $request->word_id 
+            ? WordCode::find($request->word_id) 
+            : WordCode::inRandomOrder()->first();
 
-    if (!$wordcode) {
-        return redirect()->back()->with('error', 'No word available to guess. Please add some words to the database.');
+        if (!$wordcode) { // Controleer of er een woord is (Gaby)
+            return redirect()->back()->with('error', 'Geen woorden beschikbaar. Voeg woorden toe aan de database.'); // Foutmelding (Gaby)
+        }
+
+        // Haal voortgang op of maak deze aan voor level 1 (Gaby)
+        $progress = UserProgress::firstOrCreate(
+            ['user_id' => $user->id, 'level_id' => 1], // Gebruiker en level-id (Gaby)
+            ['score' => 0, 'completed' => false, 'mistakes' => 0, 'start_time' => now()] // Initiële data (Gaby)
+        );
+
+        $timeElapsed = $progress->start_time ? now()->diffInSeconds($progress->start_time) : 0; // Tijd verlopen sinds start (Gaby)
+        $timeLimit = 60; // Tijdslimiet (Gaby)
+        $remainingTime = max(0, $timeLimit - $timeElapsed); // Bereken resterende tijd (Gaby)
+
+        $progress->update(['remaining_time' => $remainingTime]); // Update resterende tijd (Gaby)
+
+        return view('level1_woordcode', [ // Toon de level 1 view (Gaby)
+            'word' => $wordcode, // Huidig woord (Gaby)
+            'hiddenWord' => str_repeat('_ ', strlen($wordcode->word)), // Verborgen woord (Gaby)
+            'remainingTime' => $remainingTime, // Resterende tijd (Gaby)
+            'score' => $progress->score, // Score van gebruiker (Gaby)
+            'mistakesLeft' => 5 - ($progress->mistakes ?? 0), // Overgebleven fouten (Gaby)
+            'hint1' => $wordcode->hint1, // Eerste hint (Gaby)
+        ]);
     }
 
-    $progress = UserProgress::firstOrCreate(
-        ['user_id' => $user->id, 'level_id' => 1],
-        ['score' => 0, 'completed' => false, 'mistakes' => 0, 'start_time' => now()]
-    );
-
-    // Calculate remaining time
-    $startTime = $progress->start_time ?? now();
-    $timeElapsed = now()->diffInSeconds($startTime);
-    $timeLimit = 60;
-    $remainingTime = max(0, $timeLimit - $timeElapsed);
-
-    return view('game.play', [
-        'word' => $wordcode,
-        'hiddenWord' => str_repeat('_ ', strlen($wordcode->word)),
-        'remainingTime' => $remainingTime, // Pass the remaining time
-        'score' => $progress->score,
-        'mistakesLeft' => 5 - ($progress->mistakes ?? 0),
-        'hint1' => $wordcode->hint1,
-    ]);
-}
-
-
+    /**
+     * Verwerk de ingediende poging van een gebruiker (Gaby)
+     */
     public function submitGuess(Request $request)
-{
-    $user = Auth::user();
-    $progress = UserProgress::where('user_id', $user->id)->first();
-    $word = WordCode::find($request->word_id);
+    {
+        $user = Auth::user(); // Haal de ingelogde gebruiker op (Gaby)
+        $progress = UserProgress::where('user_id', $user->id)->first(); // Haal gebruikersvoortgang op (Gaby)
+        $word = WordCode::find($request->word_id); // Haal het woord op uit de database (Gaby)
 
-    // Check if the word exists
-    if (!$word) {
-        return redirect()->route('game.play')->with('error', 'Word not found.');
-    }
-
-    $currentScore = $progress->score ?? 0;
-    $guess = trim($request->guess); // Trim input
-
-    // Handle empty guess
-    if (empty($guess)) {
-        return redirect()->back()->with('error', 'Please enter a guess before submitting.');
-    }
-
-    // If the guess is correct
-    if (strcasecmp($word->word, $guess) === 0) {
-        $progress->score += 250; // Add points
-        $progress->save();
-
-        // Fetch the next word
-        $nextWord = WordCode::where('id', '!=', $word->id)->inRandomOrder()->first();
-
-        // If no more words are available, end the game
-        if (!$nextWord) {
-            return redirect()->route('game.end')->with('success', 'Congratulations! You completed all the words.');
+        if (!$word) { // Controleer of het woord bestaat (Gaby)
+            return redirect()->route('game.play')->with('error', 'Woord niet gevonden.'); // Foutmelding (Gaby)
         }
 
-        // Redirect to the next word without resetting the timer or mistakes
-        return redirect()->route('game.play', [
-            'word_id' => $nextWord->id,
-        ])->with('success', 'Correct! Moving to the next word.');
-    } else {
-        // If the guess is incorrect, increment mistakes
-        $progress->mistakes = ($progress->mistakes ?? 0) + 1;
+        $currentScore = $progress->score ?? 0; // Huidige score van gebruiker (Gaby)
+        $guess = trim($request->guess); // Haal invoer van gebruiker op en trim spaties (Gaby)
 
-        // Check if the user has reached the max mistakes
-        if ($progress->mistakes >= 5) {
-            return redirect()->route('game.start')->with('error', 'Game over! You have reached the maximum number of mistakes.');
+        if (empty($guess)) { // Controleer of de invoer leeg is (Gaby)
+            return redirect()->back()->with('error', 'Vul een woord in voordat je indient.'); // Foutmelding (Gaby)
         }
 
-        // Deduct points but ensure the score doesn't go below 0
-        $progress->score = max(0, $currentScore - 50);
-        $progress->save();
+        if (strcasecmp($word->word, $guess) === 0) { // Controleer of het woord correct is (Gaby)
+            $progress->score += 250; // Voeg punten toe (Gaby)
+            $progress->save(); // Sla voortgang op (Gaby)
 
-        // Redirect back to the same word
-        return redirect()->route('game.play', ['word_id' => $word->id])
-            ->with('error', 'Incorrect guess. Try again!');
+            $nextWord = WordCode::where('id', '!=', $word->id)->inRandomOrder()->first(); // Haal volgend woord op (Gaby)
+
+            if (!$nextWord) { // Controleer of er meer woorden zijn (Gaby)
+                return redirect()->route('game.end')->with('success', 'Gefeliciteerd! Alle woorden zijn geraden.'); // Spel beëindigen (Gaby)
+            }
+
+            return redirect()->route('game.play', [ // Ga naar volgend woord (Gaby)
+                'word_id' => $nextWord->id,
+            ])->with('success', 'Correct! Volgend woord geladen.'); // Succesbericht (Gaby)
+        } else {
+            $progress->mistakes = ($progress->mistakes ?? 0) + 1; // Verhoog aantal fouten (Gaby)
+
+            if ($progress->mistakes >= 5) { // Controleer op maximale fouten (Gaby)
+                return redirect()->route('game.start')->with('error', 'Game over! Je hebt het maximale aantal fouten bereikt.'); // Foutmelding (Gaby)
+            }
+
+            $progress->score = max(0, $currentScore - 50); // Verminder score (Gaby)
+            $progress->save(); // Sla voortgang op (Gaby)
+
+            return redirect()->route('game.play', ['word_id' => $word->id]) // Ga terug naar hetzelfde woord (Gaby)
+                ->with('error', 'Incorrect. Probeer het opnieuw!'); // Foutmelding (Gaby)
+        }
     }
-}
 
+    /**
+     * Update de resterende tijd op basis van gebruikersacties (Gaby)
+     */
+    public function updateTime(Request $request)
+    {
+        $user = Auth::user(); // Haal de ingelogde gebruiker op (Gaby)
+        $progress = UserProgress::where('user_id', $user->id)->first(); // Haal gebruikersvoortgang op (Gaby)
 
+        if ($progress) { // Controleer of voortgang bestaat (Gaby)
+            $remainingTime = $request->remaining_time ?? 60; // Haal resterende tijd op (Gaby)
+            $progress->update(['remaining_time' => $remainingTime]); // Update tijd (Gaby)
+            return response()->json(['status' => 'success']); // Succesmelding (Gaby)
+        }
+
+        return response()->json(['status' => 'error']); // Foutmelding (Gaby)
+    }
+
+    /**
+     * Beëindig het spel voor de gebruiker (Gaby)
+     */
     public function endGame(Request $request)
     {
-        $user = Auth::user();
-        $progress = UserProgress::where('user_id', $user->id)->first();
-        $progress->completed = true;
+        $user = Auth::user(); // Haal de ingelogde gebruiker op (Gaby)
+        $progress = UserProgress::where('user_id', $user->id)->first(); // Haal gebruikersvoortgang op (Gaby)
+        $progress->completed = true; // Markeer level als voltooid (Gaby)
+        $progress->save(); // Sla voortgang op (Gaby)
 
-        Score::create([
-            'user_id' => $user->id,
-            'score' => $progress->score,
-        ]);
-
-        return redirect()->route('game.start');
+        return redirect()->route('game.start'); // Ga terug naar het startscherm (Gaby)
     }
 }

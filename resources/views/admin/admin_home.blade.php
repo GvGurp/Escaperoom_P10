@@ -34,10 +34,11 @@
         <!-- Card 1 -->
         <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
             <div class="bg-gray-500 h-48 rounded-lg mb-4"></div>
-            <h2 class="text-xl font-semibold">Level 1</h2>
-            <p>Solve a game of Hangman to unlock the path.</p>
-            <div class="flex justify-center space-x-4 mt-6"> <button onclick="startGame()" class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">Start Game </button>
-        </div>
+            <h2 class="text-xl font-semibold">Level 1</h2> <br>
+            <p>Solve a game of Hangman to unlock the path.</p> <br>
+            <button onclick="window.location.href='{{ route('popUp') }}'">Start level 1 Game</button>
+
+        </div> 
         <!-- Card 2 -->
         <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
             <div class="bg-gray-500 h-48 rounded-lg mb-4"></div>
@@ -53,30 +54,4 @@
     </div>
 </div>
 
-<!-- Game Rules Page -->
-       <script> 
-        // Function to Show SweetAlert2 and Start Timer
-function startGame() {
-    Swal.fire({
-        title: 'Game Rules',
-        html: `
-            <ul class="text-left text-sm space-y-2">
-                <li>Click <strong>Start Game</strong> to begin.</li>
-                <li>A <strong>30-second timer</strong> will start.</li>
-                <li>Solve <strong>3 math puzzles</strong> by adding the values shown.</li>
-                <li>Enter your answer and click <strong>Submit</strong>.</li>
-                <li>Keep trying until you get the correct answer.</li>
-                <li>If time runs out, click <strong>Try Again</strong> to restart.</li>
-            </ul>
-        `,
-        icon: 'info',
-        confirmButtonText: 'Start'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "{{ route('game.play') }}"; 
-        }
-    });
-}
-
-       </script>
 @endsection
