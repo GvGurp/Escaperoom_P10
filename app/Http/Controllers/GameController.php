@@ -12,24 +12,24 @@ class GameController extends Controller
 {
     /**
      * Toon de spelregels voordat het spel begint (Gaby)
-     */
-    public function startGame()
-    {
-        $user = Auth::user(); // Haal de ingelogde gebruiker op (Gaby)
+     */public function startGame()
+{
+    $user = Auth::user();
 
-        // Reset score en fouten bij een nieuw spel (Gaby)
-        UserProgress::updateOrCreate(
-            ['user_id' => $user->id, 'level_id' => 1], // Gebruiker en level-id (Gaby)
-            ['score' => 0, 'completed' => false, 'mistakes' => 0] // Reset data (Gaby)
-        );
+    UserProgress::updateOrCreate(
+        ['user_id' => $user->id, 'level_id' => 1],
+        ['score' => 0, 'completed' => false, 'mistakes' => 0]
+    );
 
-        return view('level1_woordcode', [ // Laad de level 1 view (Gaby)
-            'hiddenWord' => '_ _ _ _ _', // Verborgen woord placeholder (Gaby)
-            'timeLimit' => 60, // Tijdslimiet in seconden (Gaby)
-            'score' => 0, // Startscore (Gaby)
-            'mistakesLeft' => 5, // Maximum aantal fouten (Gaby)
-        ]);
-    }
+    return view('level1_woordcode', [
+        'hiddenWord' => '_ _ _ _ _',
+        'timeLimit' => 60,
+        'remainingTime' => 60, // Add this line
+        'score' => 0,
+        'mistakesLeft' => 5,
+    ]);
+}
+
 
     /**
      * Verwerk het spel als een gebruiker een poging doet (Gaby)

@@ -35,7 +35,7 @@
         <p>No word available to guess. Please add some words to the database.</p> <!-- Fallback message (Gaby) -->
     @endif
 
-    <!-- Timer Display -->
+    <!-- Timer Display -s->
     <div id="timer" class="text-xl font-bold text-red-600"></div> <!-- Timer element (Gaby) -->
 
     <!-- Start and End Game Buttons -->
@@ -52,7 +52,7 @@
     document.addEventListener('DOMContentLoaded', function () { 
         const timerElement = document.getElementById('time-display'); // Timer element reference (Gaby)
         const endGameButton = document.getElementById('end-game-btn'); // End game button reference (Gaby)
-        let timeRemaining = {{ $remainingTime }}; // Get remaining time from server (Gaby)
+        let timeRemaining = {{ $remainingTime ?? 60 }};
         let countdown; // Variable to store countdown interval (Gaby)
 
         // Function to start or resume the timer (Gaby)
