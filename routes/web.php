@@ -41,3 +41,6 @@ Route::get('/level1_woordcode', [GameController::class, 'index'])->name('game.in
 Route::post('/level1_woordcode/checkAnswer', [GameController::class, 'checkAnswer'])->name('game.checkAnswer');
 Route::get('/next-game', [GameController::class, 'nextWord'])->name('next-game');
 Route::get('/level1_woordcode/nextWord', [GameController::class, 'nextWord'])->name('game.nextWord');
+
+Route::get('/end-game', [GameController::class, 'endGame'])->name('game.end');
+

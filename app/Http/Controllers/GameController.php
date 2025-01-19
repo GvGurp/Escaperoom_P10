@@ -6,6 +6,21 @@ use App\Models\WordCode;
 
 class GameController extends Controller
 {
+
+    public function index()
+    {
+        $words = WordCode::all();
+
+        if ($words->isEmpty()) {
+            return redirect('/')->with('error', 'No words available for the game!');
+        }
+
+        // Start the game by initializing the session
+        session(['currentIndex' => 0, 'score' => 0, 'showHint2' => false, 'remainingTime' => 60]);
+
+        // Redirect to the next word (which begins the game)
+        return redirect()->route('game.nextWord');
+    }
     public function nextWord()
     {
         $words = WordCode::all();
@@ -73,5 +88,11 @@ class GameController extends Controller
             session(['showHint2' => true]); // Enable hint 2 visibility
             return redirect()->route('game.nextWord')->with('message', 'Incorrect! You lost 50 points.');
         }
+    }
+
+    public function endGame()
+    {
+        $score = session('score', 0); // Get the player's score
+        return view('game_end', ['score' => $score]); // Pass the score to the game_end view
     }
 }

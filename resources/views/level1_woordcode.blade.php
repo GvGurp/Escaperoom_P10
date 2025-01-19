@@ -44,20 +44,21 @@
 <!-- Timer Script -->
 <script>
     let timer = {{ $timer }}; // Get the remaining time from the server
-    const timerElement = document.getElementById('timer');
-    const remainingTimeInput = document.getElementById('remaining-time');
+    const timerElement = document.getElementById('timer'); // Element to display the timer
+    const remainingTimeInput = document.getElementById('remaining-time'); // Hidden input to store remaining time
 
     const countdown = setInterval(() => {
         if (timer > 0) {
-            timer--;
-            timerElement.textContent = timer;
+            timer--; // Decrement the timer
+            timerElement.textContent = timer; // Update the timer display
             remainingTimeInput.value = timer; // Update the hidden input with the remaining time
         } else {
-            clearInterval(countdown); // Stop the timer
-            timerElement.textContent = "0";
-            alert("Time's up! The game is over.");
-            document.getElementById('guess-form').submit(); // Optionally submit the form or handle game over logic
+            clearInterval(countdown); // Stop the timer when it reaches 0
+            timerElement.textContent = "0"; // Display 0 when time is up
+            window.location.href = '{{ route('game.end') }}';; // Redirect to the end popup page
         }
     }, 1000); // Decrease timer every 1 second
 </script>
+
+
 @endsection
