@@ -3,7 +3,7 @@
 
 
 use App\Http\Controllers\GameController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\navigationController;
@@ -37,11 +37,7 @@ Route::middleware(['admin'])->group(function () {
 Route::get('/level1_woordcode', function () { return view('level1_woordcode');})->name('level1.woordcode');
 Route::get('/popUp', function () { return view('popUp');})->name('popUp');
 
-Route::group(['prefix' => 'game'], function () {
-    Route::get('/start', [GameController::class, 'startGame'])->name('game.start');  // Start the game
-    Route::get('/play', [GameController::class, 'playGame'])->name('game.play');    // Play the game
-    Route::post('/submit-guess', [GameController::class, 'submitGuess'])->name('game.submit-guess');  // Submit a guess
-    Route::get('/end', [GameController::class, 'endGame'])->name('game.end');       // End the game
-});
-
-Route::post('/game/update-time', [GameController::class, 'updateTime'])->name('game.update-time');
+Route::get('/level1_woordcode', [GameController::class, 'index'])->name('game.index');
+Route::post('/level1_woordcode/checkAnswer', [GameController::class, 'checkAnswer'])->name('game.checkAnswer');
+Route::get('/next-game', [GameController::class, 'nextWord'])->name('next-game');
+Route::get('/level1_woordcode/nextWord', [GameController::class, 'nextWord'])->name('game.nextWord');
