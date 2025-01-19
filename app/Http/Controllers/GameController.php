@@ -33,10 +33,13 @@ class GameController extends Controller
             'showHint2' => session('showHint2', false), // Track if Hint 2 should be shown
         ];
 
+        // Pass the timer value from the session or default to 60 seconds
+        $remainingTime = session('remainingTime', 60);
+
         return view('level1_woordcode', [
             'score' => session('score', 0),
             'gameData' => $gameData,
-            'timer' => 60,
+            'timer' => $remainingTime,
         ]);
     }
 
@@ -52,6 +55,10 @@ class GameController extends Controller
         // Get the current index and word
         $currentIndex = session('currentIndex', 0);
         $currentWord = $words[$currentIndex];
+
+        // Persist the remaining time from the request
+        $remainingTime = $request->input('remainingTime', 60);
+        session(['remainingTime' => $remainingTime]);
 
         // Check if the guess is correct
         if ($guess === strtolower($currentWord->word)) {

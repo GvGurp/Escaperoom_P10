@@ -7,7 +7,7 @@
 
         <!-- Display Remaining Time -->
         <div class="flex justify-between mt-4">
-            <h4 class="text-lg">Remaining Time: <span id="timer">60</span> seconds</h4>
+            <h4 class="text-lg">Remaining Time: <span id="timer">{{ $timer }}</span> seconds</h4>
             <h4 class="text-lg">Score: <span id="score">{{ session('score', 0) }}</span></h4>
         </div>
 
@@ -18,35 +18,46 @@
 
         <!-- Hint Display -->
         <div>
-    <p>Hint 1: {{ $gameData['hint1'] }}</p>
-    @if ($gameData['showHint2'])
-        <p>Hint 2: {{ $gameData['hint2'] }}</p>
-    @endif
-</div>
-
+            <p>Hint 1: {{ $gameData['hint1'] }}</p>
+            @if ($gameData['showHint2'])
+                <p>Hint 2: {{ $gameData['hint2'] }}</p>
+            @endif
+        </div>
 
         <!-- Feedback -->
-        @if(isset($feedback))
+        @if(session('message'))
             <div class="mt-4 bg-gray-700 p-4 rounded-lg text-white">
-                <p>{{ $feedback }}</p>
+                <p>{{ session('message') }}</p>
             </div>
         @endif
 
-        <form action="{{ route('game.checkAnswer') }}" method="POST">
+        <!-- Guess Form -->
+        <form action="{{ route('game.checkAnswer') }}" method="POST" id="guess-form">
             @csrf
+            <input type="hidden" name="remainingTime" id="remaining-time" value="{{ $timer }}">
             <input type="text" name="guess" id="guess" class="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your guess">
             <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-300 mt-4">Submit</button>
         </form>
-
-        <!-- Game End Popup -->
-        <div id="game-end-popup" class="hidden mt-6 p-8 bg-gray-700 rounded-lg shadow-lg">
-            <h3 class="text-2xl font-bold text-center mb-4">Game Over!</h3>
-            <p class="text-center text-lg">Final Score: <span id="final-score">{{ session('score', 0) }}</span></p>
-            <div class="flex justify-center mt-6 space-x-4">
-                <a href="{{ route('game.index') }}" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300">Try Again</a>
-                <a href="{{ route('next-game') }}" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-300">Next Game</a>
-            </div>
-        </div>
     </div>
 </div>
+
+<!-- Timer Script -->
+<script>
+    let timer = {{ $timer }}; // Get the remaining time from the server
+    const timerElement = document.getElementById('timer');
+    const remainingTimeInput = document.getElementById('remaining-time');
+
+    const countdown = setInterval(() => {
+        if (timer > 0) {
+            timer--;
+            timerElement.textContent = timer;
+            remainingTimeInput.value = timer; // Update the hidden input with the remaining time
+        } else {
+            clearInterval(countdown); // Stop the timer
+            timerElement.textContent = "0";
+            alert("Time's up! The game is over.");
+            document.getElementById('guess-form').submit(); // Optionally submit the form or handle game over logic
+        }
+    }, 1000); // Decrease timer every 1 second
+</script>
 @endsection
