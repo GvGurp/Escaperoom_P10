@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,24 +6,12 @@ use App\Models\WordCode;
 
 class GameController extends Controller
 {
-    public function index()
-    {
-        // Initialize game state
-        session([
-            'score' => 0,
-            'currentIndex' => 0, // Track current word index
-        ]);
-
-        return $this->nextWord();
-    }
-
     public function nextWord()
     {
         $words = WordCode::all();
 
         if ($words->isEmpty()) {
-            return redirect
-            ('/')->with('error', 'No words available for the game!');
+            return redirect('/')->with('error', 'No words available for the game!');
         }
 
         // Get the current index from the session
@@ -43,6 +30,7 @@ class GameController extends Controller
             'blanks' => str_repeat('-', strlen($currentWord->word)),
             'hint1' => $currentWord->hint1,
             'hint2' => $currentWord->hint2,
+            'showHint2' => session('showHint2', false), // Track if Hint 2 should be shown
         ];
 
         return view('level1_woordcode', [
@@ -70,10 +58,12 @@ class GameController extends Controller
             // Correct answer
             session(['score' => session('score', 0) + 100]); // Add 100 points
             session(['currentIndex' => $currentIndex + 1]); // Move to the next word
+            session(['showHint2' => false]); // Reset hint 2 visibility
             return redirect()->route('game.nextWord')->with('message', 'Correct! You earned 100 points.');
         } else {
             // Incorrect answer
             session(['score' => session('score', 0) - 50]); // Deduct 50 points
+            session(['showHint2' => true]); // Enable hint 2 visibility
             return redirect()->route('game.nextWord')->with('message', 'Incorrect! You lost 50 points.');
         }
     }

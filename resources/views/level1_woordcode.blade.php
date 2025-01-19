@@ -17,10 +17,13 @@
         </div>
 
         <!-- Hint Display -->
-        <div class="mt-6">
-            <p><strong class="text-lg">Hint:</strong> <span id="hint1">{{ $gameData['hint1'] }}</span></p>
-            <p id="hint2" class="mt-3 text-lg {{ empty($gameData['hint2']) ? 'hidden' : '' }}"><strong>Hint 2:</strong> <span>{{ $gameData['hint2'] }}</span></p>
-        </div>
+        <div>
+    <p>Hint 1: {{ $gameData['hint1'] }}</p>
+    @if ($gameData['showHint2'])
+        <p>Hint 2: {{ $gameData['hint2'] }}</p>
+    @endif
+</div>
+
 
         <!-- Feedback -->
         @if(isset($feedback))
